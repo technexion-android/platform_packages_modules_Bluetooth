@@ -219,9 +219,11 @@ struct LeScanningManager::impl : public LeAddressManagerCallback {
     }
     is_filter_supported_ = controller_->IsSupported(OpCode::LE_ADV_FILTER);
     if (is_filter_supported_) {
+#ifdef APCF_SUPPORT
       le_scanning_interface_->EnqueueCommand(
           LeAdvFilterReadExtendedFeaturesBuilder::Create(),
           module_handler_->BindOnceOn(this, &impl::on_apcf_read_extended_features_complete));
+#endif
     }
     is_batch_scan_supported_ = controller->IsSupported(OpCode::LE_BATCH_SCAN);
     is_periodic_advertising_sync_transfer_sender_supported_ =
